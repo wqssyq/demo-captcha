@@ -1,5 +1,6 @@
 package win.leizhang.demo.captcha.bootstrap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
@@ -18,13 +19,15 @@ public class Application {
 
     private static Logger logger = LoggerFactory.getLogger(Application.class);
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String VM_OPTIONS_DUBBO = "dubbo.protocol.dubbo.port";
+    private static final String DEFAULT_DUBBO_PORT = "20880";
 
     private static final String APPLICATION_NAME = "captcha-service";
 
     public static void main(String[] args) {
         // ############################ 设置Dubbo参数 ############################
         // JVM参数：-Ddubbo.protocol.dubbo.port=20880
-        String dubboPort = System.getProperty("spring.dubbo.protocol.port");
+        String dubboPort = getDubboPort();
 
         System.setProperty("crtCurrentApplicationName", APPLICATION_NAME);
         System.setProperty("crtDubboPort", dubboPort);
@@ -66,5 +69,20 @@ public class Application {
         System.err.println(getNow() + " " + msg);
     }
 
+    private static String getDubboPort() {
+        String dubboPort = System.getProperty(VM_OPTIONS_DUBBO);
+        if (StringUtils.isBlank(dubboPort)) {
+            dubboPort = DEFAULT_DUBBO_PORT;
+            System.setProperty(VM_OPTIONS_DUBBO, dubboPort);
+        } else {
+            try {
+                Integer.parseInt(dubboPort);
+            } catch (Exception e) {
+                printConsoleErrorLog(APPLICATION_NAME + "应用启动失败！错误的dubbo端口号参数：" + VM_OPTIONS_DUBBO + "=" + dubboPort);
+                System.exit(1);
+            }
+        }
+        return dubboPort;
+    }
 
 }

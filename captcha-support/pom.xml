@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-      <groupId>win.leizhang.demo.captcha</groupId>
-      <artifactId>captcha-parent</artifactId>
+        <groupId>win.leizhang.demo.captcha</groupId>
+        <artifactId>captcha-parent</artifactId>
         <version>1.0</version>
     </parent>
 

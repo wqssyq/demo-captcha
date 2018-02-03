@@ -1,18 +1,17 @@
 package win.leizhang.demo.captcha.web.bootstrap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.context.annotation.ImportResource;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
-@ServletComponentScan("win.leizhang.demo.captcha.web")
-@ImportResource({"classpath:spring/applicationContext.xml"})
+@ServletComponentScan
 public class Application {
 
     private static Logger logger = LoggerFactory.getLogger(Application.class);
@@ -23,7 +22,7 @@ public class Application {
     public static void main(String[] args) {
         // ############################ 设置参数 ############################
         // JVM参数：-Dserver.port=8888
-        String serverPort = System.getProperty("server.port");
+        String serverPort = getRestPort();
 
         // log4j用
         System.setProperty("crtCurrentApplicationName", APPLICATION_NAME);
@@ -70,5 +69,20 @@ public class Application {
         System.err.println(getNow() + " " + msg);
     }
 
+
+    private static String getRestPort() {
+        String serverPort = System.getProperty("server.port");
+        if (StringUtils.isBlank(serverPort)) {
+            serverPort = "8080";
+        } else {
+            try {
+                Integer.parseInt(serverPort);
+            } catch (Exception e) {
+                printConsoleErrorLog(APPLICATION_NAME + "应用启动失败！错误的HTTP端口号参数：server.port=" + serverPort);
+                System.exit(1);
+            }
+        }
+        return serverPort;
+    }
 
 }

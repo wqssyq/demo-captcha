@@ -14,8 +14,8 @@
 
         <!-- crt architecture -->
         <dependency>
-          <groupId>win.leizhang.demo.captcha</groupId>
-          <artifactId>captcha-api</artifactId>
+            <groupId>win.leizhang.demo.captcha</groupId>
+            <artifactId>captcha-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
@@ -67,6 +67,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${disruptor.version}</version>
         </dependency>
 
         <!-- dubbo -->
