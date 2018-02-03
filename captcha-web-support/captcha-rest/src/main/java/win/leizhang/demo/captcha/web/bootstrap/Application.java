@@ -29,8 +29,8 @@ public class Application {
         System.setProperty("crtServerPort", serverPort);
 
         // 设置1
-        System.setProperty("server.context-path", "/demo/captcha");
-        System.setProperty("server.servlet-path", "*.html");
+        //System.setProperty("server.context-path", "/demo/captcha");
+        //System.setProperty("server.servlet-path", "*.html");
 
         // 设置2
         System.setProperty("spring.autoconfigure.exclude", "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration");
