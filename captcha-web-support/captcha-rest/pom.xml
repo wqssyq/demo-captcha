@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-      <groupId>win.leizhang.demo.captcha</groupId>
+        <groupId>win.leizhang.demo.captcha</groupId>
         <artifactId>captcha-web-support</artifactId>
         <version>1.0</version>
     </parent>
@@ -14,7 +14,7 @@
     <dependencies>
 
         <dependency>
-          <groupId>win.leizhang.demo.captcha</groupId>
+            <groupId>win.leizhang.demo.captcha</groupId>
             <artifactId>captcha-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
@@ -67,6 +67,25 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
+
+        <!-- 这3个为什么要加上? 需要优化 -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${disruptor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <!-- end -->
+
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
