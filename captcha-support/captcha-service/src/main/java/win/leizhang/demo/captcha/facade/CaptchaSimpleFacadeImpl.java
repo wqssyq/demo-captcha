@@ -12,12 +12,11 @@ import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
 import win.leizhang.demo.captcha.api.facade.CaptchaSimpleFacade;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
+import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.utils.ValidateCode;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by zealous on 2018/2/3.
@@ -33,24 +32,24 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
     @Override
     public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple() {
 
+        // 初始化
         MainOutputDTO<CaptchaOutputDTO> outputDTO = new MainOutputDTO<>();
         CaptchaOutputDTO outDTO = new CaptchaOutputDTO();
 
         // 生成
-        Map<String, String> map = this.genCaptcha();
-        String randomCode = map.get("uuid").toString();
-        String captcha = map.get("code").toString();
-        String b64Image = map.get("enB64").toString();
+        CaptchaBO captchaBO = genCaptcha();
+        // 取参数
+        String code = captchaBO.getCode();
+        String randomCode = captchaBO.getUuid();
 
         // 写缓存
-        captchaCacheService.setCaptcha(captcha, randomCode);
+        captchaCacheService.setCaptcha(code, randomCode);
 
+        // 返回
         outDTO.setRandomCode(randomCode);
-        outDTO.setB64Image(b64Image);
-
+        outDTO.setB64Image(captchaBO.getEnB64());
         // FIXME 压测用
-        String codeContent = new String(Base64.decodeBase64(captcha));
-        outDTO.setCodeContent(codeContent);
+        outDTO.setCodeContent(new String(Base64.decodeBase64(code)));
 
         outputDTO.setOutputParam(outDTO);
         return outputDTO;
@@ -66,7 +65,11 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         return null;
     }
 
-    private Map<String, String> genCaptcha() {
+    private CaptchaBO genCaptcha() {
+
+        // 初始化
+        CaptchaBO bo = new CaptchaBO();
+
         // 生成
         ValidateCode vCode = new ValidateCode(180, 60, 4, 200);// lineCount=500,干扰线增加
         // 转为base64
@@ -85,12 +88,11 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         // 随机码
         String randomCode = "TMP" + RandomUtils.nextLong();
 
-        Map<String, String> map = new HashMap<>();
-        map.put("uuid", randomCode);
-        map.put("code", captcha);
-        map.put("enB64", b64Image);
+        // 返回
+        bo.setUuid(randomCode);
+        bo.setCode(captcha);
+        bo.setEnB64(b64Image);
 
-        // TODO 改造成<bo>类
-        return map;
+        return bo;
     }
 }
