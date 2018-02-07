@@ -41,7 +41,7 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
             redisUtils.delete(redisKey);
         } else {
             //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-            log.error("error!");
+            log.error("fix,error!");
         }
     }
 
@@ -55,11 +55,10 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
 
         String redisKey = RedisKeyConstants.getUuid2SimpleCode(key);
         if (redisUtils.exists(redisKey)) {
-            String b64Code = redisUtils.get(redisKey);
-            return b64Code;
+            return redisUtils.get(redisKey);
         }
         //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-        log.error("error!");
+        log.error("fix,error!");
         return null;
     }
 
@@ -69,7 +68,7 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
         Set<String> keys = redisUtils.getKeys(redisKey);
         if (null == keys) {
             //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-            log.error("error!");
+            log.error("fix,error!");
         }
         return keys;
     }
