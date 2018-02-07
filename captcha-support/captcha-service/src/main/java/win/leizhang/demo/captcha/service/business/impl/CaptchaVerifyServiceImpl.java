@@ -1,5 +1,6 @@
 package win.leizhang.demo.captcha.service.business.impl;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
 
     @Override
     public boolean verify(CaptchaBO bo) {
+        log.info("入参是 ==> {}", JSON.toJSONString(bo));
 
         // 初始化
         boolean flag = false;
@@ -43,6 +45,12 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
             b64Code = captchaCacheService.getCaptcha(resourceId, uuid);
         }
 
+        // 不能为空
+        if (StringUtils.isBlank(b64Code)) {
+            log.info("取到的验证码为空！");
+            return flag;
+        }
+
         // 校验
         b64CodeDe = new String(Base64.decodeBase64(b64Code));
         // 忽略大小写
@@ -50,11 +58,11 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
             flag = true;
 
             // 删除缓存
+            captchaCacheService.deleteCaptcha(uuid);
+            captchaCacheService.deleteCaptcha(resourceId, uuid);
             // 耗性能的操作
             //Set<String> keys = captchaCacheService.getCaptchaKeys(resourceId, "*");
             //captchaCacheService.deleteCaptchas(keys);
-            captchaCacheService.deleteCaptcha(resourceId, uuid);
-            captchaCacheService.deleteCaptcha(uuid);
         }
 
         return flag;

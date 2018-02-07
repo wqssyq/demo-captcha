@@ -43,12 +43,10 @@ public class CaptchaSimpleController {
     }
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public MainOutputDTO verifySimple1(@RequestBody CaptchaInputDTO inputDTO) {
+    public MainOutputDTO verifySimple1(@RequestBody MainInputDTO<CaptchaInputDTO> inputDTO) {
 
-        //outputDTO = captchaSimpleFacade.verifyCaptchaSimple(inputDTO);
-
-        //return outputDTO;
-        return null;
+        MainOutputDTO outputDTO = captchaSimpleFacade.verifyCaptchaSimple(inputDTO);
+        return outputDTO;
     }
 
 }
