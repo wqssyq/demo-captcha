@@ -1,7 +1,6 @@
 package win.leizhang.demo.captcha.test.String;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 
 /**
@@ -12,12 +11,12 @@ public class TestString {
     @Test
     public void test1() {
 
-        String randomCode = "CRT" + RandomStringUtils.randomAlphanumeric(32);
+        Double code = RandomUtils.nextDouble();
 
-        //String code = StringUtils;
-
-        System.out.println(randomCode);
-        //System.out.println(code);
+        for (int i = 0; i < 101; i++) {
+            Long code2 = RandomUtils.nextLong();
+            System.out.println(code2 + ",size=" + code2.toString().length());
+        }
 
     }
 

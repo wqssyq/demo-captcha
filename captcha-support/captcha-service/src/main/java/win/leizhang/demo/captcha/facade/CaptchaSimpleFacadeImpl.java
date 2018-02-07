@@ -1,12 +1,11 @@
 package win.leizhang.demo.captcha.facade;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.RandomValuePropertySource;
 import win.leizhang.demo.captcha.api.dto.base.MainInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
@@ -84,13 +83,7 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         // 图片流
         String b64Image = new String(Base64.encodeBase64(out.toByteArray()));
         // 随机码
-        // FIXME <RandomStringUtils>这个类要换掉
-        String randomCode = "CRT" + RandomStringUtils.randomAlphanumeric(32);
-
-        // TODO 方案貌似不可行
-        RandomValuePropertySource rp = new RandomValuePropertySource();
-        Object l = rp.getProperty("long");
-        log.info("rod.long ==> {}", l);
+        String randomCode = "TMP" + RandomUtils.nextLong();
 
         Map<String, String> map = new HashMap<>();
         map.put("uuid", randomCode);
