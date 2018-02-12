@@ -120,19 +120,14 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
+
+            <!-- 打包的jar中排除 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>log4j2.xml</exclude>
+                        <exclude>mybatis/generatorConfigAutoMapper.xml</exclude>
                     </excludes>
                 </configuration>
             </plugin>
