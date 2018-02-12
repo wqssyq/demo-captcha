@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
+import win.leizhang.demo.captcha.api.utils.ExceptionUtil;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
 import win.leizhang.demo.captcha.utils.RedisKeyConstants;
 import win.leizhang.demo.captcha.utils.RedisUtils;
@@ -40,8 +42,7 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
         if (redisUtils.exists(redisKey)) {
             redisUtils.delete(redisKey);
         } else {
-            //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-            log.error("fix,error!");
+            throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
         }
     }
 
@@ -57,9 +58,7 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
         if (redisUtils.exists(redisKey)) {
             return redisUtils.get(redisKey);
         }
-        //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-        log.error("fix,error!");
-        return null;
+        throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
     }
 
     @Override
@@ -67,8 +66,7 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
         String redisKey = RedisKeyConstants.getUuid2SimpleCode(key);
         Set<String> keys = redisUtils.getKeys(redisKey);
         if (null == keys) {
-            //throw new CaptchaServiceException(CaptchaResultCode.CAPTCH_CODE_INVALID.code(), CaptchaResultCode.CAPTCH_CODE_INVALID.msg());
-            log.error("fix,error!");
+            throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
         }
         return keys;
     }
