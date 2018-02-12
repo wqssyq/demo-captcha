@@ -1,5 +1,7 @@
 package win.leizhang.demo.captcha.api.dto.base;
 
+import win.leizhang.demo.captcha.api.utils.TidManager;
+
 import java.io.Serializable;
 
 import static win.leizhang.demo.captcha.api.exception.CaptchaResultCode.GLOBAL_SUCCESS;
@@ -9,11 +11,15 @@ public class MainOutputDTO<T> extends AbstractBaseDTO implements Serializable {
     public MainOutputDTO() {
         this.code = GLOBAL_SUCCESS.code();
         this.msg = GLOBAL_SUCCESS.msg();
+        transactionUuid = TidManager.getTransactionUuid();
+        TidManager.clear();
     }
 
     public MainOutputDTO(String code, String msg) {
         this.code = code;
         this.msg = msg;
+        transactionUuid = TidManager.getTransactionUuid();
+        TidManager.clear();
     }
 
     private String transactionUuid;
