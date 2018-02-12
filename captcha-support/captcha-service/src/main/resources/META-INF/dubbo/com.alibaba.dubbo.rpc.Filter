@@ -1,1 +1,1 @@
-DubboConsumerFilter=win.leizhang.demo.captcha.utils.DubboConsumerFilter
+DubboConsumerFilter=win.leizhang.demo.captcha.common.dubbo.DubboConsumerFilter

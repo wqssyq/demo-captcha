@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.service.business.CaptchaGenService;
-import win.leizhang.demo.captcha.utils.ValidateCode;
+import win.leizhang.demo.captcha.common.captcha.simple.ValidateCode;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;

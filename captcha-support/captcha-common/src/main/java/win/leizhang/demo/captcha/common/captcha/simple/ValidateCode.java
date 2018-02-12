@@ -1,4 +1,4 @@
-package win.leizhang.demo.captcha.utils;
+package win.leizhang.demo.captcha.common.captcha.simple;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

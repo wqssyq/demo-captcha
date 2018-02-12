@@ -1,9 +1,9 @@
-package win.leizhang.demo.captcha.web.utils;
+package win.leizhang.demo.captcha.common.dubbo;
 
 import com.alibaba.dubbo.rpc.*;
 import com.alibaba.fastjson.JSON;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import java.util.UUID;
@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class DubboConsumerFilter implements Filter {
 
-    private static final Logger LOGGER = LogManager.getLogger(DubboConsumerFilter.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private static final Random random = new Random();
     private static final int RANDOM_BOUND = 100; // 随机打印的概率
@@ -34,13 +34,13 @@ public class DubboConsumerFilter implements Filter {
 
         long beginTime = System.currentTimeMillis();
         try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("[DubboConsumer-begin]|{}|{}|{}", apiName, txnUuid, JSON.toJSONString(invocation.getArguments()));
+            if (log.isDebugEnabled()) {
+                log.debug("[DubboConsumer-begin]|{}|{}|{}", apiName, txnUuid, JSON.toJSONString(invocation.getArguments()));
             }
             result = invoker.invoke(invocation);
 
         } finally {
-            if (LOGGER.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 long elapsedTime = System.currentTimeMillis() - beginTime;
                 String resultValue = result == null ? "[null]" : JSON.toJSONString(result.getValue());
                 // 出参数据过大的，按一定概率打印日志
@@ -51,7 +51,7 @@ public class DubboConsumerFilter implements Filter {
                         resultValue = "[DubboConsumerFilter, skip...]";
                     }
                 }
-                LOGGER.debug("[DubboConsumer-end]|{}|{}|{}ms|{}", apiName, txnUuid, elapsedTime, resultValue);
+                log.debug("[DubboConsumer-end]|{}|{}|{}ms|{}", apiName, txnUuid, elapsedTime, resultValue);
             }
         }
 
