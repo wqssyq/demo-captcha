@@ -110,9 +110,8 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_VERIFY_FAIL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_VERIFY_FAIL.msg());
         }
-        // FIXME 临时用
-        outputDTO.setTransactionUuid(flag + "");
 
+        // 返回
         return outputDTO;
     }
 
