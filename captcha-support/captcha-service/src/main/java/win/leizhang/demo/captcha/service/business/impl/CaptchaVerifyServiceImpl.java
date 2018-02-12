@@ -51,16 +51,16 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
             return flag;
         }
 
-        // 校验
+        // 转换
         b64CodeDe = new String(Base64.decodeBase64(b64Code));
-        // 忽略大小写
+        // 校验，忽略大小写
         if (StringUtils.equalsIgnoreCase(b64CodeDe, inputCode)) {
             flag = true;
 
             // 删除缓存
             captchaCacheService.deleteCaptcha(uuid);
             captchaCacheService.deleteCaptcha(resourceId, uuid);
-            // 耗性能的操作
+            // 批量删除，这是耗性能的操作
             //Set<String> keys = captchaCacheService.getCaptchaKeys(resourceId, "*");
             //captchaCacheService.deleteCaptchas(keys);
         }

@@ -13,39 +13,40 @@ import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
 import win.leizhang.demo.captcha.api.facade.CaptchaSimpleFacade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 简单的，测试
+ * 简单的生成，测试
  *
  * @author zealous
  * @date 2017/3/18.
  */
-@RequestMapping("/simple")
+@RequestMapping("/simpleGen")
 @RestController
-public class CaptchaSimpleController {
+public class CaptchaSimpleGenController {
 
-    private static final Logger logger = LogManager.getLogger(CaptchaSimpleController.class);
+    private static final Logger logger = LogManager.getLogger(CaptchaSimpleGenController.class);
 
     @Reference
     CaptchaSimpleFacade captchaSimpleFacade;
 
+    // 生成1
     @RequestMapping(value = "/gen1", method = RequestMethod.POST)
     public MainOutputDTO<CaptchaOutputDTO> getSimple1() {
-        MainOutputDTO<CaptchaOutputDTO> outputDTO = captchaSimpleFacade.genCaptchaSimple();
-        return outputDTO;
+        return captchaSimpleFacade.genCaptchaSimple();
     }
 
+    // 生成2
     @RequestMapping(value = "/gen2", method = RequestMethod.POST)
     public MainOutputDTO<CaptchaOutputDTO> getSimple2(@RequestBody MainInputDTO<CaptchaInputDTO> inputDTO) {
-
+        // 入参
         String resourceId = inputDTO.getInputParam().getResourceId();
+        // 转list
+        List<String> idList = new ArrayList<>();
+        idList.add(resourceId);
 
-        return null;
-    }
-
-    @RequestMapping(value = "/verify", method = RequestMethod.POST)
-    public MainOutputDTO verifySimple1(@RequestBody MainInputDTO<CaptchaInputDTO> inputDTO) {
-
-        MainOutputDTO outputDTO = captchaSimpleFacade.verifyCaptchaSimple(inputDTO);
+        MainOutputDTO<CaptchaOutputDTO> outputDTO = captchaSimpleFacade.genCaptchaSimple(idList);
         return outputDTO;
     }
 

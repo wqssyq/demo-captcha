@@ -17,6 +17,8 @@ import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.service.business.CaptchaGenService;
 import win.leizhang.demo.captcha.service.business.CaptchaVerifyService;
 
+import java.util.List;
+
 /**
  * Created by zealous on 2018/2/3.
  */
@@ -34,6 +36,11 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
 
     @Override
     public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple() {
+        return genCaptchaSimple(null);
+    }
+
+    @Override
+    public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple(List<String> idList) {
 
         // 初始化
         MainOutputDTO<CaptchaOutputDTO> outputDTO = new MainOutputDTO<>();
@@ -46,7 +53,14 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         String randomCode = captchaBO.getUuid();
 
         // 写缓存
-        captchaCacheService.setCaptcha(code, randomCode);
+        if (null == idList) {
+            captchaCacheService.setCaptcha(code, randomCode);
+        } else {
+            idList.add(randomCode);
+            // 转数组
+            String[] resourceIds = idList.toArray(new String[idList.size()]);
+            captchaCacheService.setCaptcha(code, resourceIds);
+        }
 
         // 数据转换
         outDTO.setRandomCode(randomCode);
@@ -57,11 +71,6 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         // 返回
         outputDTO.setOutputParam(outDTO);
         return outputDTO;
-    }
-
-    @Override
-    public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple(String resourceId) {
-        return null;
     }
 
     @Override
