@@ -42,7 +42,8 @@ public class CaptchaCacheServiceImpl implements CaptchaCacheService {
         if (redisUtils.exists(redisKey)) {
             redisUtils.delete(redisKey);
         } else {
-            throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
+            // 删除不抛出异常
+            //throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
         }
     }
 
