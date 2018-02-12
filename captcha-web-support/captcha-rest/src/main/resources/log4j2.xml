@@ -63,27 +63,23 @@
 
     <loggers>
         <!-- 生产调整到INFO -->
-        <AsyncLogger name="com.crt" level="DEBUG"/>
+        <AsyncLogger name="win.leizhang" level="DEBUG"/>
         <!-- 各应用按实际情况自行定义相关类的输出级别 -->
-        <AsyncLogger name="com.crt.member" level="DEBUG"/>
+        <AsyncLogger name="win.leizhang.demo" level="DEBUG"/>
+        <AsyncLogger name="win.leizhang.demo.captcha" level="DEBUG"/>
 
         <AsyncLogger name="com.apache" level="WARN"/>
-        <AsyncLogger name="com.ibm.sc" level="WARN"/>
         <AsyncLogger name="org.apache.ibatis.jdbc" level="WARN"/>
-
         <AsyncLogger name="org.apache.zookeeper.ClientCnxn" level="WARN"/>
         <AsyncLogger name="org.apache.zookeeper.ZooKeeper" level="WARN"/>
         <AsyncLogger name="org.apache.commons.httpclient.util.IdleConnectionHandler" level="WARN"/>
 
         <AsyncLogger name="org.apache.http.client.protocol.RequestAddCookies" level="WARN"/>
-
         <AsyncLogger name="org.apache.http.client.protocol.RequestAuthCache" level="WARN"/>
         <AsyncLogger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="WARN"/>
         <AsyncLogger name="org.apache.http.impl.execchain.MainClientExec" level="WARN"/>
         <AsyncLogger name="org.apache.http.headers" level="WARN"/>
         <AsyncLogger name="org.apache.http.wire" level="WARN"/>
-
-        <AsyncLogger name="org.apache.activemq.transport.AbstractInactivityMonitor" level="WARN"/>
 
         <AsyncLogger name="com.alibaba.dubbo.remoting.transport.DecodeHandler" level="WARN"/>
         <AsyncLogger name="com.alibaba.dubbo.monitor.dubbo.DubboMonitor" level="OFF"/>
@@ -92,15 +88,7 @@
         <AsyncLogger name="com.alibaba.dubbo.registry.zookeeper.ZookeeperRegistry" level="WARN"/>
         <AsyncLogger name="com.alibaba.dubbo.config.AbstractConfig" level="WARN"/>
 
-        <AsyncLogger name="com.baidu.disconf.client.config.inner.DisInnerConfigHelper" level="WARN"/>
-        <AsyncLogger name="com.baidu.disconf.client.config.ConfigMgr" level="WARN"/>
-        <AsyncLogger name="com.baidu.disconf.core.common.utils.ClassLoaderUtil" level="WARN"/>
-        <AsyncLogger name="com.baidu.disconf.core.common.utils.http.HttpClientUtil" level="WARN"/>
-
         <AsyncLogger name="org.springframework" level="WARN"/>
-        <AsyncLogger name="RocketmqRemoting" level="WARN"/>
-        <AsyncLogger name="RocketmqClient" level="WARN"/>
-        <AsyncLogger name="org.apache.kafka" level="WARN"/>
 
         <asyncRoot level="INFO">
             <!-- 各应用自行调整，日志输出至文件，自动按时间、按文件大小进行归档 ,生产环境调默认为INFO，如有特殊需求，在disconf动态调级 -->
