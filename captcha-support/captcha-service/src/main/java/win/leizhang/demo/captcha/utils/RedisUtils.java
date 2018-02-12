@@ -129,8 +129,7 @@ public class RedisUtils {
     /**
      * 设置Redis中的过期时间
      *
-     * @param prefix
-     * @param key
+     * @param redisKey
      * @param seconds
      * @return
      */
@@ -142,11 +141,11 @@ public class RedisUtils {
     /**
      * 判断key是否已经存在Redis中
      *
-     * @param redisMemberIdKey
+     * @param redisKey
      * @return
      */
-    public boolean exists(String redisMemberIdKey) {
-        return stringRedisTemplate.hasKey(redisMemberIdKey);
+    public boolean exists(String redisKey) {
+        return stringRedisTemplate.hasKey(redisKey);
     }
 
     /**

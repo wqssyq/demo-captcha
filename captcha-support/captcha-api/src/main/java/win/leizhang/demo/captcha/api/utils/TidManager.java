@@ -13,11 +13,10 @@ import java.util.UUID;
  * ***********************************************************
  */
 public class TidManager {
-    private static final ThreadLocal<String> TIDTREAD_LOCAL = new ThreadLocal<String>();
-    private static final ThreadLocal<Long> REQUEST_BEGIN_TIME_MS = new ThreadLocal<Long>();
-    private static final ThreadLocal<String> FROM_LOCAL = new ThreadLocal<String>();
-    //private static final ThreadLocal<String> MEMBER_STATUS = new ThreadLocal<String>();
-    private static final ThreadLocal<String> SOURCE_FROM_POINTS_GW = new ThreadLocal<String>();
+    private static final ThreadLocal<String> TIDTREAD_LOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<Long> REQUEST_BEGIN_TIME_MS = new ThreadLocal<>();
+    private static final ThreadLocal<String> FROM_LOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<String> SOURCE_FROM_POINTS_GW = new ThreadLocal<>();
 
     /**
      * 设置TID
