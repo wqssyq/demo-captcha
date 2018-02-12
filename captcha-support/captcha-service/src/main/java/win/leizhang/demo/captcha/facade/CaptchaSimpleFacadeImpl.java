@@ -11,6 +11,7 @@ import win.leizhang.demo.captcha.api.dto.base.MainInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
+import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
 import win.leizhang.demo.captcha.api.facade.CaptchaSimpleFacade;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
 import win.leizhang.demo.captcha.service.bo.CaptchaBO;
@@ -83,13 +84,13 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         CaptchaInputDTO inputBO = inputDTO.getInputParam();
         // radom非空检查
         if (StringUtils.isBlank(inputBO.getRandomCode())) {
-            //outputDTO.setCode(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.code());
-            //outputDTO.setMsg(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.msg());
+            outputDTO.setCode(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.code());
+            outputDTO.setMsg(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.msg());
             return outputDTO;
         }
         if (StringUtils.isBlank(inputBO.getCode())) {
-            //outputDTO.setCode(CaptchaResultCode.CAPTCH_CODE_NOTNULL.code());
-            //outputDTO.setMsg(CaptchaResultCode.CAPTCH_CODE_NOTNULL.msg());
+            outputDTO.setCode(CaptchaResultCode.CAPTCH_CODE_NOTNULL.code());
+            outputDTO.setMsg(CaptchaResultCode.CAPTCH_CODE_NOTNULL.msg());
             return outputDTO;
         }
 
@@ -102,9 +103,12 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         // 校验
         boolean flag = captchaVerifyService.verify(captchaBO);
 
-        if (!flag) {
-            outputDTO.setCode("验证失败");
-            outputDTO.setMsg("验证失败");
+        if (flag) {
+            outputDTO.setCode(CaptchaResultCode.CAPTCH_VERIFY_SUCCESS.code());
+            outputDTO.setMsg(CaptchaResultCode.CAPTCH_VERIFY_SUCCESS.msg());
+        } else {
+            outputDTO.setCode(CaptchaResultCode.CAPTCH_VERIFY_FAIL.code());
+            outputDTO.setMsg(CaptchaResultCode.CAPTCH_VERIFY_FAIL.msg());
         }
         // FIXME 临时用
         outputDTO.setTransactionUuid(flag + "");

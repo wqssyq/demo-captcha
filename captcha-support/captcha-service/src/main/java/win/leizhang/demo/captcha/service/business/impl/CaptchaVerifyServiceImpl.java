@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
+import win.leizhang.demo.captcha.api.utils.ExceptionUtil;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
 import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.service.business.CaptchaVerifyService;
@@ -48,7 +50,7 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
         // 不能为空
         if (StringUtils.isBlank(b64Code)) {
             log.info("取到的验证码为空！");
-            return flag;
+            throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
         }
 
         // 转换

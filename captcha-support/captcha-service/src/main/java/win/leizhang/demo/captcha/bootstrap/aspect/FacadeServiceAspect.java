@@ -1,13 +1,5 @@
-```java
-package win.leizhang.demo.captcha.bootstrap;
+package win.leizhang.demo.captcha.bootstrap.aspect;
 
-import com.crt.member.common.annotation.NotPrintOutputData;
-import com.crt.member.common.logging.ObjectLoggingWrapper;
-import com.crt.member.growth.business.api.dto.base.BaseInputDTO;
-import com.crt.member.growth.business.api.dto.base.BusinessOutputDTO;
-import com.crt.member.growth.business.api.exception.APIResultCode;
-import com.crt.member.growth.business.api.exception.MemberSubServiceException;
-import com.crt.member.growth.business.api.utils.TidManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +8,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import win.leizhang.demo.captcha.api.dto.base.AbstractPublicInputDTO;
+import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
+import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
+import win.leizhang.demo.captcha.api.exception.CaptchaServiceException;
+import win.leizhang.demo.captcha.api.utils.TidManager;
+import win.leizhang.demo.captcha.common.logger.ObjectLoggingWrapper;
 
 /**
  * Facade层拦截器
@@ -52,9 +50,9 @@ public class FacadeServiceAspect {
                 exMsg += e.getMessage();
             }
 
-            if (e instanceof MemberSubServiceException) {
+            if (e instanceof CaptchaServiceException) {
                 // 业务异常不需要出现在错误日志里
-                logger.info("[BusinessException] {}, detail==>{} {}", exMsg, ((MemberSubServiceException) e).getCode(), e.getMessage());
+                logger.info("[BusinessException] {}, detail==>{} {}", exMsg, ((CaptchaServiceException) e).getCode(), e.getMessage());
             } else {
                 // 加warn级别
                 // 加error级别
@@ -67,18 +65,18 @@ public class FacadeServiceAspect {
 
             if (null != returnType && !RETURN_TYPE_VOID.equals(returnType.getName())) {
                 // 处理业务异常
-                if (e instanceof MemberSubServiceException) {
-                    MemberSubServiceException bzException = (MemberSubServiceException) e;
+                if (e instanceof CaptchaServiceException) {
+                    CaptchaServiceException bzException = (CaptchaServiceException) e;
                     String msg = "";
-                    if (BusinessOutputDTO.class.equals(returnType)) {
+                    if (MainOutputDTO.class.equals(returnType)) {
                         msg = bzException.getMessage();
                     }
-                    outputObject = new BusinessOutputDTO(bzException.getCode(), msg);
+                    outputObject = new MainOutputDTO(bzException.getCode(), msg);
                 } else {
                     // 处理其他异常，统一返回<操作失败、系统繁忙>信息
-                    APIResultCode errorCode = APIResultCode.SYSTEM_SERVICE_UNAVAILABLE;
-                    if (BusinessOutputDTO.class.equals(returnType)) {
-                        outputObject = new BusinessOutputDTO(errorCode.code(), errorCode.msg());
+                    CaptchaResultCode errorCode = CaptchaResultCode.SYSTEM_GENERAL_ERROR;
+                    if (MainOutputDTO.class.equals(returnType)) {
+                        outputObject = new MainOutputDTO(errorCode.code(), errorCode.msg());
                     } else if (String.class.equals(returnType)) {
                         // 同上
                     } else {
@@ -100,8 +98,8 @@ public class FacadeServiceAspect {
     public static void setMDC(Object[] parameters) {
         String transactionUuid = null;
         if (parameters.length > 0) {
-            if (parameters[0] instanceof BaseInputDTO) {
-                BaseInputDTO baseDTO = (BaseInputDTO) parameters[0];
+            if (parameters[0] instanceof AbstractPublicInputDTO) {
+                AbstractPublicInputDTO baseDTO = (AbstractPublicInputDTO) parameters[0];
                 transactionUuid = baseDTO.getTransactionUuid();
             }
         }
@@ -115,17 +113,12 @@ public class FacadeServiceAspect {
     private void resetMDC(String apiName, long startTimeMs, Object outputObject, ProceedingJoinPoint joinPoint) {
         if (logger.isDebugEnabled()) {
             MethodSignature method = (MethodSignature) joinPoint.getSignature();
-            NotPrintOutputData notPrintOutputDataAnnotation = method.getMethod().getAnnotation(NotPrintOutputData.class);
             Long elapsedTimeMs = System.currentTimeMillis() - startTimeMs;
 
-            if (notPrintOutputDataAnnotation != null) {
-                logger.debug("DubboProvider[{}], Output: {@NotPrintOutputData, skip...}, elapsedTime: {}ms", apiName, elapsedTimeMs);
-            } else {
-                logger.debug("DubboProvider[{}], Output: {}, elapsedTime: {}ms", apiName, ObjectLoggingWrapper.wrap(outputObject), elapsedTimeMs);
-            }
+            logger.debug("DubboProvider[{}], Output: {}, elapsedTime: {}ms", apiName, ObjectLoggingWrapper.wrap(outputObject), elapsedTimeMs);
+
         }
         // 重置uuid
     }
 
 }
-```

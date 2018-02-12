@@ -2,7 +2,7 @@ package win.leizhang.demo.captcha.api.dto.base;
 
 import java.io.Serializable;
 
-import static win.leizhang.demo.captcha.api.constants.CaptchaResultCode.GLOBAL_SUCCESS;
+import static win.leizhang.demo.captcha.api.exception.CaptchaResultCode.GLOBAL_SUCCESS;
 
 public class MainOutputDTO<T> extends AbstractBaseDTO implements Serializable {
 

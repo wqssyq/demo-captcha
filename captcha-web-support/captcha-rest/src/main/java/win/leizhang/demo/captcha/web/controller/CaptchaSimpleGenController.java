@@ -1,8 +1,6 @@
 package win.leizhang.demo.captcha.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,8 +23,6 @@ import java.util.List;
 @RequestMapping("/simpleGen")
 @RestController
 public class CaptchaSimpleGenController {
-
-    private static final Logger logger = LogManager.getLogger(CaptchaSimpleGenController.class);
 
     @Reference
     CaptchaSimpleFacade captchaSimpleFacade;

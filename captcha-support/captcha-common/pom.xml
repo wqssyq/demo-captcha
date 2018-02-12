@@ -12,6 +12,24 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- spring -->
+        <springboot.version>1.5.9.RELEASE</springboot.version>
+
+        <!-- common -->
+        <commons-lang3.version>3.6</commons-lang3.version>
+        <commons-collections4.version>4.1</commons-collections4.version>
+        <fastjson.version>1.2.39</fastjson.version>
+        <fasterxml.jackson.version>2.8.1</fasterxml.jackson.version>
+        <disruptor.version>3.3.6</disruptor.version>
+
+        <!-- dubbo -->
+        <springboot.dubbo.version>1.0.0</springboot.dubbo.version>
+        <dubbo.version>2.8.4</dubbo.version>
+        <hessian.version>4.0.38</hessian.version>
+
+        <!-- other -->
+
     </properties>
 
     <!--
@@ -28,16 +46,48 @@
         </dependencyManagement>
     -->
     <dependencies>
+
+        <!-- spring-boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+
+        <!-- jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+
+        <!-- common -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.6</version>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.1</version>
+            <version>${commons-collections4.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -1,4 +1,4 @@
-package win.leizhang.demo.captcha.api.constants;
+package win.leizhang.demo.captcha.api.exception;
 
 /**
  * DESCRIPTION : captcha 返回码
@@ -17,6 +17,7 @@ public enum CaptchaResultCode {
     DATA_BIND_ERROR("E1M00006", "数据绑定错误!"),
     METHOD_ARGUMENT_VALID_ERROR("E1M00007", "参数机校验错误!"),
     INVALID_CHAR_ERROR("E1M00008", "非法字符异常！"),
+    THIRD_DUBBO_RETURN_CODE_ERROR("E1M00009", "远程服务调用异常！"),
 
     /********** sys end ***********/
 	
