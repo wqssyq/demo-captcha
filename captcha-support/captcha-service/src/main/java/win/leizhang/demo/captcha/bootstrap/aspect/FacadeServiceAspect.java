@@ -1,12 +1,12 @@
 package win.leizhang.demo.captcha.bootstrap.aspect;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import win.leizhang.demo.captcha.api.dto.base.AbstractPublicInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
@@ -23,7 +23,7 @@ import win.leizhang.demo.captcha.common.logger.ObjectLoggingWrapper;
 @Component
 public class FacadeServiceAspect {
 
-    private static final Logger logger = LogManager.getLogger(FacadeServiceAspect.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private static final String RETURN_TYPE_VOID = "void";
 
     @Around("execution(* win.leizhang.demo.captcha.facade..*.*(..))")
@@ -37,8 +37,8 @@ public class FacadeServiceAspect {
         try {
             Object[] parameters = joinPoint.getArgs();
             this.setMDC(parameters);
-            if (logger.isDebugEnabled()) {
-                logger.debug("DubboProvider[{}], Input: {}", apiName, ObjectLoggingWrapper.wrap(parameters));
+            if (log.isDebugEnabled()) {
+                log.debug("DubboProvider[{}], Input: {}", apiName, ObjectLoggingWrapper.wrap(parameters));
             }
             outputObject = joinPoint.proceed();
 
@@ -52,11 +52,11 @@ public class FacadeServiceAspect {
 
             if (e instanceof CaptchaServiceException) {
                 // 业务异常不需要出现在错误日志里
-                logger.info("[BusinessException] {}, detail==>{} {}", exMsg, ((CaptchaServiceException) e).getCode(), e.getMessage());
+                log.info("[BusinessException] {}, detail==>{} {}", exMsg, ((CaptchaServiceException) e).getCode(), e.getMessage());
             } else {
                 // 加warn级别
                 // 加error级别
-                logger.error("[SystemException] {}, detail==>{}", exMsg, e);
+                log.error("[SystemException] {}, detail==>{}", exMsg, e);
             }
 
             MethodSignature method = (MethodSignature) joinPoint.getSignature();
@@ -88,7 +88,7 @@ public class FacadeServiceAspect {
             try {
                 this.resetMDC(apiName, startTimeMs, outputObject, joinPoint);
             } catch (Exception e) {
-                logger.warn("Exception occurred when invoke resetMDC() in facade finally block, msg: {}", e.getMessage(), e);
+                log.warn("Exception occurred when invoke resetMDC() in facade finally block, msg: {}", e.getMessage(), e);
             }
         }
 
@@ -111,11 +111,11 @@ public class FacadeServiceAspect {
     }
 
     private void resetMDC(String apiName, long startTimeMs, Object outputObject, ProceedingJoinPoint joinPoint) {
-        if (logger.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             MethodSignature method = (MethodSignature) joinPoint.getSignature();
             Long elapsedTimeMs = System.currentTimeMillis() - startTimeMs;
 
-            logger.debug("DubboProvider[{}], Output: {}, elapsedTime: {}ms", apiName, ObjectLoggingWrapper.wrap(outputObject), elapsedTimeMs);
+            log.debug("DubboProvider[{}], Output: {}, elapsedTime: {}ms", apiName, ObjectLoggingWrapper.wrap(outputObject), elapsedTimeMs);
 
         }
         // 重置uuid
