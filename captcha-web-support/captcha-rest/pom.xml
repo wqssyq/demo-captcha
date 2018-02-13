@@ -74,12 +74,7 @@
             <version>${fastjson.version}</version>
         </dependency>
 
-        <!-- 这3个为什么要加上? 需要优化 -->
-        <dependency>
-            <groupId>com.lmax</groupId>
-            <artifactId>disruptor</artifactId>
-            <version>${disruptor.version}</version>
-        </dependency>
+        <!-- 这个为什么要加上? 需要优化 -->
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
