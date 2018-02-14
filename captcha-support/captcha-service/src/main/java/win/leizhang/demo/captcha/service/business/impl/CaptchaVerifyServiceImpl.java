@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputBO;
 import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
 import win.leizhang.demo.captcha.api.utils.ExceptionUtil;
@@ -36,7 +37,7 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
         String codeInput = bo.getCode();
 
         boolean flag = false;
-        List<String> uuidList = (null != bo.getUuids()) ? bo.getUuids() : new ArrayList<>();
+        List<String> uuidList = (!CollectionUtils.isEmpty(bo.getUuids())) ? bo.getUuids() : new ArrayList<>();
         uuidList.add(uuid);
 
         // 转数组

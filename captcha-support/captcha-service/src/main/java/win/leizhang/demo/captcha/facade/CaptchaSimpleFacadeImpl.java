@@ -61,6 +61,7 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         if (!CollectionUtils.isEmpty(resourceIdList)) {
             uuidList.addAll(resourceIdList);
         }
+        // 加入到list
         uuidList.add(captchaBO.getUuid());
 
         // 转数组
@@ -88,7 +89,7 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         MainOutputDTO outputDTO = new MainOutputDTO();
 
         CaptchaInputBO inputBO = inputDTO.getInputParam();
-        // radom非空检查
+        // 校验
         if (StringUtils.isBlank(inputBO.getUuid())) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.msg());

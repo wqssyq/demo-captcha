@@ -33,7 +33,7 @@ public class CaptchaSimpleVerifyController {
         CaptchaInputBO inputBO = inputDTO.getInputParam();
 
         // 校验
-        if (null == inputBO.getUuids() || StringUtils.isBlank(inputBO.getUuid())) {
+        if (StringUtils.isBlank(inputBO.getUuid())) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.msg());
             return outputDTO;
