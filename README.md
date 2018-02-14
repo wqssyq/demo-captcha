@@ -33,14 +33,14 @@ spring-boot + dubbo + redis 的服务框架，提供dubbo服务和rest服务。
 - 2.用阿里原生的springboot包；
 - 3.LoggerFactory的重复问题优化，<log4j:WARN No appenders could be found for logger (com.alibaba.dubbo.common.logger.LoggerFactory).>；
 - 4.完善md文档；
-。
+---
 
 
 ***branch:dev_internal***
 
 **2018-2-13**
 - 1.LoggerFactory的重复问题优化，同<master>分支；
-。
+---
 
 
 ### 3.2.完成记录(总)
@@ -49,7 +49,7 @@ spring-boot + dubbo + redis 的服务框架，提供dubbo服务和rest服务。
 - 1.captcha的bo梳理，统一名称；
 - 2.切新分支，单独维护闭源版本；
 - 3.pom的优化，javassist包引用问题；
-。
+---
 
 
 ### 四、其他
