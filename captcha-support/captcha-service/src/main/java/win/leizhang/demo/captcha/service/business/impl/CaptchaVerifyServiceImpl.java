@@ -7,10 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputBO;
 import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
 import win.leizhang.demo.captcha.api.utils.ExceptionUtil;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
-import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.service.business.CaptchaVerifyService;
 
 /**
@@ -25,43 +25,31 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
     CaptchaCacheService captchaCacheService;
 
     @Override
-    public boolean verify(CaptchaBO bo) {
+    public boolean verify(CaptchaInputBO bo) {
         log.info("入参是 ==> {}", JSON.toJSONString(bo));
 
         // 初始化
         boolean flag = false;
+        String[] uuids = bo.getUuids();
+        String codeInput = bo.getCode();
 
         // 解码前
-        String b64Code;
-        // 解码后
-        String b64CodeDe;
-
-        // 入参是
-        String resourceId = bo.getEnB64();
-        String uuid = bo.getUuid();
-        String inputCode = bo.getCode();
-
-        if (StringUtils.isBlank(resourceId)) {
-            b64Code = captchaCacheService.getCaptcha(uuid);
-        } else {
-            b64Code = captchaCacheService.getCaptcha(resourceId, uuid);
-        }
-
+        String codeB64 = captchaCacheService.getCaptcha(uuids);
         // 不能为空
-        if (StringUtils.isBlank(b64Code)) {
+        if (StringUtils.isBlank(codeB64)) {
             log.info("取到的验证码为空！");
             throw ExceptionUtil.buildBzException(CaptchaResultCode.CAPTCH_CODE_INVALID);
         }
 
-        // 转换
-        b64CodeDe = new String(Base64.decodeBase64(b64Code));
+        // 转换，解码后
+        String codeDecrypt = new String(Base64.decodeBase64(codeB64));
+
         // 校验，忽略大小写
-        if (StringUtils.equalsIgnoreCase(b64CodeDe, inputCode)) {
+        if (StringUtils.equalsIgnoreCase(codeInput, codeDecrypt)) {
             flag = true;
 
             // 删除缓存
-            captchaCacheService.deleteCaptcha(uuid);
-            captchaCacheService.deleteCaptcha(resourceId, uuid);
+            captchaCacheService.deleteCaptcha(uuids);
             // 批量删除，这是耗性能的操作
             //Set<String> keys = captchaCacheService.getCaptchaKeys(resourceId, "*");
             //captchaCacheService.deleteCaptchas(keys);

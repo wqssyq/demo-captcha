@@ -1,15 +1,19 @@
-package win.leizhang.demo.captcha.service.bo;
+package win.leizhang.demo.captcha.api.dto.captcha;
 
 import java.io.Serializable;
 
 /**
- * Created by zealous on 2018/2/7.
+ * 图形验证码，通用对象
+ * Created by zealous on 2018/2/14.
  */
 public class CaptchaBO implements Serializable {
 
+    // 通用唯一识别码
     private String uuid;
+    // 验证码，默认是b64结果
     private String code;
-    private String enB64;
+    // 验证码图片b64的
+    private String codeImage;
 
     public String getUuid() {
         return uuid;
@@ -27,11 +31,11 @@ public class CaptchaBO implements Serializable {
         this.code = code;
     }
 
-    public String getEnB64() {
-        return enB64;
+    public String getCodeImage() {
+        return codeImage;
     }
 
-    public void setEnB64(String enB64) {
-        this.enB64 = enB64;
+    public void setCodeImage(String codeImage) {
+        this.codeImage = codeImage;
     }
 }

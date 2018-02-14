@@ -1,12 +1,12 @@
 package win.leizhang.demo.captcha.service.business;
 
-import win.leizhang.demo.captcha.service.bo.CaptchaBO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputBO;
 
 /**
  * Created by zealous on 2018/2/7.
  */
 public interface CaptchaVerifyService {
 
-    boolean verify(CaptchaBO bo);
+    boolean verify(CaptchaInputBO bo);
 
 }

@@ -1,17 +1,16 @@
 package win.leizhang.demo.captcha.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import win.leizhang.demo.captcha.api.dto.base.MainInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaBO;
+import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
 import win.leizhang.demo.captcha.api.facade.CaptchaSimpleFacade;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,20 +28,25 @@ public class CaptchaSimpleGenController {
 
     // 生成1
     @RequestMapping(value = "/gen1", method = RequestMethod.POST)
-    public MainOutputDTO<CaptchaOutputDTO> getSimple1() {
+    public MainOutputDTO<CaptchaBO> getSimple1() {
         return captchaSimpleFacade.genCaptchaSimple();
     }
 
     // 生成2
     @RequestMapping(value = "/gen2", method = RequestMethod.POST)
-    public MainOutputDTO<CaptchaOutputDTO> getSimple2(@RequestBody MainInputDTO<CaptchaInputDTO> inputDTO) {
-        // 入参
-        String resourceId = inputDTO.getInputParam().getResourceId();
-        // 转list
-        List<String> idList = new ArrayList<>();
-        idList.add(resourceId);
+    public MainOutputDTO<CaptchaBO> getSimple2(@RequestBody List<String> idList) {
 
-        MainOutputDTO<CaptchaOutputDTO> outputDTO = captchaSimpleFacade.genCaptchaSimple(idList);
+        // 初始化
+        MainOutputDTO<CaptchaBO> outputDTO = new MainOutputDTO<>();
+
+        // 校验
+        if (CollectionUtils.isEmpty(idList)) {
+            outputDTO.setCode(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.code());
+            outputDTO.setMsg(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.msg());
+            return outputDTO;
+        }
+
+        outputDTO = captchaSimpleFacade.genCaptchaSimple(idList);
         return outputDTO;
     }
 

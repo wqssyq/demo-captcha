@@ -7,17 +7,19 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import win.leizhang.demo.captcha.api.dto.base.MainInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaBO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputBO;
 import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
 import win.leizhang.demo.captcha.api.facade.CaptchaSimpleFacade;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
-import win.leizhang.demo.captcha.service.bo.CaptchaBO;
 import win.leizhang.demo.captcha.service.business.CaptchaGenService;
 import win.leizhang.demo.captcha.service.business.CaptchaVerifyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,55 +37,59 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
     @Autowired
     CaptchaVerifyService captchaVerifyService;
 
+    @Value("${captcha.testflag}")
+    private boolean testFlag;
+
     @Override
-    public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple() {
+    public MainOutputDTO<CaptchaBO> genCaptchaSimple() {
         return genCaptchaSimple(null);
     }
 
     @Override
-    public MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple(List<String> idList) {
+    public MainOutputDTO<CaptchaBO> genCaptchaSimple(List<String> resourceIdList) {
 
         // 初始化
-        MainOutputDTO<CaptchaOutputDTO> outputDTO = new MainOutputDTO<>();
-        CaptchaOutputDTO outDTO = new CaptchaOutputDTO();
+        MainOutputDTO<CaptchaBO> outputDTO = new MainOutputDTO<>();
 
-        // 生成
+        // 生成验证码
         CaptchaBO captchaBO = captchaGenService.genCaptcha();
-        // 取参数
         String code = captchaBO.getCode();
-        String randomCode = captchaBO.getUuid();
+        // 构造对象
+        List<String> uuidList = new ArrayList<>();
+        uuidList.add(captchaBO.getUuid());
 
-        // 写缓存
-        if (null == idList) {
-            captchaCacheService.setCaptcha(code, randomCode);
-        } else {
-            idList.add(randomCode);
-            // 转数组
-            String[] resourceIds = idList.toArray(new String[idList.size()]);
-            captchaCacheService.setCaptcha(code, resourceIds);
+        // 入参的资源id不为空时，加入到list
+        if (!CollectionUtils.isEmpty(resourceIdList)) {
+            uuidList.addAll(resourceIdList);
         }
 
-        // 数据转换
-        outDTO.setRandomCode(randomCode);
-        outDTO.setB64Image(captchaBO.getEnB64());
-        // FIXME 压测用
-        outDTO.setCodeContent(new String(Base64.decodeBase64(code)));
+        // 转数组
+        String[] uuids = uuidList.toArray(new String[uuidList.size()]);
+        // 写缓存
+        captchaCacheService.setCaptcha(code, uuids);
+
+        // 测试开关
+        if (testFlag) {
+            captchaBO.setCode(new String(Base64.decodeBase64(code)));
+        } else {
+            captchaBO.setCode(null);
+        }
 
         // 返回
-        outputDTO.setOutputParam(outDTO);
+        outputDTO.setOutputParam(captchaBO);
         return outputDTO;
     }
 
     @Override
-    public MainOutputDTO verifyCaptchaSimple(MainInputDTO<CaptchaInputDTO> inputDTO) {
+    public MainOutputDTO verifyCaptchaSimple(MainInputDTO<CaptchaInputBO> inputDTO) {
         log.info("校验，入参是 ==> {}", JSON.toJSONString(inputDTO));
 
         // 初始化
         MainOutputDTO outputDTO = new MainOutputDTO();
 
-        CaptchaInputDTO inputBO = inputDTO.getInputParam();
+        CaptchaInputBO inputBO = inputDTO.getInputParam();
         // radom非空检查
-        if (StringUtils.isBlank(inputBO.getRandomCode())) {
+        if (null == inputBO.getUuids()) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.msg());
             return outputDTO;
@@ -94,14 +100,8 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
             return outputDTO;
         }
 
-        CaptchaBO captchaBO = new CaptchaBO();
-        captchaBO.setUuid(inputBO.getRandomCode());
-        captchaBO.setCode(inputBO.getCode());
-        // 暂用存资源id
-        captchaBO.setEnB64(inputBO.getResourceId());
-
         // 校验
-        boolean flag = captchaVerifyService.verify(captchaBO);
+        boolean flag = captchaVerifyService.verify(inputBO);
 
         if (flag) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_VERIFY_SUCCESS.code());

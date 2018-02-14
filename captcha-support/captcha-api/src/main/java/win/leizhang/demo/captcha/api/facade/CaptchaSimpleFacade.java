@@ -2,8 +2,8 @@ package win.leizhang.demo.captcha.api.facade;
 
 import win.leizhang.demo.captcha.api.dto.base.MainInputDTO;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputDTO;
-import win.leizhang.demo.captcha.api.dto.captcha.CaptchaOutputDTO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaBO;
+import win.leizhang.demo.captcha.api.dto.captcha.CaptchaInputBO;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import java.util.List;
 public interface CaptchaSimpleFacade {
 
     // 生成
-    MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple();
+    MainOutputDTO<CaptchaBO> genCaptchaSimple();
 
-    MainOutputDTO<CaptchaOutputDTO> genCaptchaSimple(List<String> idList);
+    MainOutputDTO<CaptchaBO> genCaptchaSimple(List<String> resourceIdList);
 
     // 校验
-    MainOutputDTO verifyCaptchaSimple(MainInputDTO<CaptchaInputDTO> inputDTO);
+    MainOutputDTO verifyCaptchaSimple(MainInputDTO<CaptchaInputBO> inputDTO);
 }
