@@ -1,11 +1,11 @@
 package win.leizhang.demo.captcha.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaBO;
 import win.leizhang.demo.captcha.api.exception.CaptchaResultCode;
@@ -19,22 +19,23 @@ import java.util.List;
  * @author zealous
  * @date 2017/3/18.
  */
-@RequestMapping("/simpleGen")
+@Api(tags = "生成图形验证码")
+@RequestMapping("/captcha/gen")
 @RestController
 public class CaptchaSimpleGenController {
 
     @Reference
     CaptchaSimpleFacade captchaSimpleFacade;
 
-    // 生成1
-    @RequestMapping(value = "/gen1", method = RequestMethod.POST)
-    public MainOutputDTO<CaptchaBO> getSimple1() {
+    @ApiOperation(value = "普通生成", notes = "无参数")
+    @GetMapping("/simpleGen1")
+    public MainOutputDTO<CaptchaBO> gen1() {
         return captchaSimpleFacade.genCaptchaSimple();
     }
 
-    // 生成2
-    @RequestMapping(value = "/gen2", method = RequestMethod.POST)
-    public MainOutputDTO<CaptchaBO> getSimple2(@RequestParam List<String> idList) {
+    @ApiOperation(value = "普通生成2", notes = "有参数，需要传入资源id数组对象，参数用回车或逗号隔开即可")
+    @PostMapping("/simpleGen2")
+    public MainOutputDTO<CaptchaBO> gen2(@RequestParam List<String> idList) {
 
         // 初始化
         MainOutputDTO<CaptchaBO> outputDTO = new MainOutputDTO<>();
@@ -48,6 +49,12 @@ public class CaptchaSimpleGenController {
 
         outputDTO = captchaSimpleFacade.genCaptchaSimple(idList);
         return outputDTO;
+    }
+
+    @ApiIgnore
+    @DeleteMapping("/simpleGen1/del/{id}")
+    public String deleteById(@PathVariable String uuid) {
+        return "delete captcha : " + uuid;
     }
 
 }
