@@ -54,14 +54,14 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
         // 生成验证码
         CaptchaBO captchaBO = captchaGenService.genCaptcha();
         String code = captchaBO.getCode();
+
         // 构造对象
         List<String> uuidList = new ArrayList<>();
-        uuidList.add(captchaBO.getUuid());
-
         // 入参的资源id不为空时，加入到list
         if (!CollectionUtils.isEmpty(resourceIdList)) {
             uuidList.addAll(resourceIdList);
         }
+        uuidList.add(captchaBO.getUuid());
 
         // 转数组
         String[] uuids = uuidList.toArray(new String[uuidList.size()]);

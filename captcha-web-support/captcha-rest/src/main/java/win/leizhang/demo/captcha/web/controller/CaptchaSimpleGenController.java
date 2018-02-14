@@ -2,9 +2,9 @@ package win.leizhang.demo.captcha.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import win.leizhang.demo.captcha.api.dto.base.MainOutputDTO;
 import win.leizhang.demo.captcha.api.dto.captcha.CaptchaBO;
@@ -34,7 +34,7 @@ public class CaptchaSimpleGenController {
 
     // 生成2
     @RequestMapping(value = "/gen2", method = RequestMethod.POST)
-    public MainOutputDTO<CaptchaBO> getSimple2(@RequestBody List<String> idList) {
+    public MainOutputDTO<CaptchaBO> getSimple2(@RequestParam List<String> idList) {
 
         // 初始化
         MainOutputDTO<CaptchaBO> outputDTO = new MainOutputDTO<>();
