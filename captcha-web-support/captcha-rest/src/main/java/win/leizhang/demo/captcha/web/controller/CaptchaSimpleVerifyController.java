@@ -1,6 +1,7 @@
 package win.leizhang.demo.captcha.web.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,7 @@ public class CaptchaSimpleVerifyController {
         CaptchaInputBO inputBO = inputDTO.getInputParam();
 
         // 校验
-        if (null == inputBO.getUuids()) {
+        if (null == inputBO.getUuids() || StringUtils.isBlank(inputBO.getUuid())) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_RESOURCEID_NOTNULL.msg());
             return outputDTO;

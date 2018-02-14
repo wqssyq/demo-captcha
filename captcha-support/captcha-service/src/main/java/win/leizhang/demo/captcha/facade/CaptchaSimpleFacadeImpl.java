@@ -89,7 +89,7 @@ public class CaptchaSimpleFacadeImpl implements CaptchaSimpleFacade {
 
         CaptchaInputBO inputBO = inputDTO.getInputParam();
         // radom非空检查
-        if (null == inputBO.getUuids()) {
+        if (StringUtils.isBlank(inputBO.getUuid())) {
             outputDTO.setCode(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.code());
             outputDTO.setMsg(CaptchaResultCode.CAPTCH_RANDOMCODE_NOTNULL.msg());
             return outputDTO;

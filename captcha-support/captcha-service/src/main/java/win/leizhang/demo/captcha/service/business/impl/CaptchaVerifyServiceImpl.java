@@ -13,6 +13,9 @@ import win.leizhang.demo.captcha.api.utils.ExceptionUtil;
 import win.leizhang.demo.captcha.service.basic.CaptchaCacheService;
 import win.leizhang.demo.captcha.service.business.CaptchaVerifyService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by zealous on 2018/2/7.
  */
@@ -29,9 +32,15 @@ public class CaptchaVerifyServiceImpl implements CaptchaVerifyService {
         log.info("入参是 ==> {}", JSON.toJSONString(bo));
 
         // 初始化
-        boolean flag = false;
-        String[] uuids = bo.getUuids();
+        String uuid = bo.getUuid();
         String codeInput = bo.getCode();
+
+        boolean flag = false;
+        List<String> uuidList = (null != bo.getUuids()) ? bo.getUuids() : new ArrayList<>();
+        uuidList.add(uuid);
+
+        // 转数组
+        String[] uuids = uuidList.toArray(new String[uuidList.size()]);
 
         // 解码前
         String codeB64 = captchaCacheService.getCaptcha(uuids);
